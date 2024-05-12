@@ -17,16 +17,19 @@ export default function About() {
     >
       <SectionHeading>About me</SectionHeading>
       <p className="mb-3">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam
-        blanditiis laudantium non deleniti, quisquam repellat eligendi
-        consequatur ratione. Vitae veritatis dignissimos distinctio vero fugit
-        consectetur illum officiis tenetur maiores sapiente.
+        My main <b>focus</b> is on making{" "}
+        <span className="underline">stunning</span> and{" "}
+        <span className="underline">efficient</span> web experiences that users{" "}
+        <span className="text-rose-500">
+          <b>love</b>
+        </span>
+        .
       </p>
       <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione
-        officiis vel modi aperiam nemo totam expedita omnis inventore laborum
-        nulla nesciunt suscipit illum consequuntur, vero distinctio, in corporis
-        quis nobis.
+        I'm constantly learning and improving, blending design and tech know-how
+        to create innovative solutions. My goal is to craft web applications
+        that look great, work seamlessly, and leave a lasting impression on
+        users.
       </p>
     </motion.section>
   );

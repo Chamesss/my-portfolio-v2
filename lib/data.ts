@@ -2,9 +2,9 @@ import React from "react";
 import { CgWorkAlt } from "react-icons/cg";
 import { FaReact } from "react-icons/fa";
 import { LuGraduationCap } from "react-icons/lu";
-import corpcommentImg from "@/public/corpcomment.png";
-import rmtdevImg from "@/public/rmtdev.png";
-import wordanalyticsImg from "@/public/wordanalytics.png";
+import chatapp from "@/public/chatapp.png";
+import todoapp from "@/public/Todoapp.png";
+import annonce from "@/public/annonce.png"
 
 export const links = [
     {
@@ -35,52 +35,56 @@ export const links = [
 
 export const experiencesData = [
     {
-        title: "Graduated bootcamp",
-        location: "Miami, FL",
+        title: "Full-Stack Developer Freelance",
+        location: "Tunis, Mahdia",
         description:
-            "I graduated after 6 months of studying. I immediately found a job as a front-end developer.",
-        icon: React.createElement(LuGraduationCap),
-        date: "2019",
-    },
-    {
-        title: "Front-End Developer",
-        location: "Orlando, FL",
-        description:
-            "I worked as a front-end developer for 2 years in 1 job and 1 year in another job. I also upskilled to the full stack.",
-        icon: React.createElement(CgWorkAlt),
-        date: "2019 - 2021",
-    },
-    {
-        title: "Full-Stack Developer",
-        location: "Houston, TX",
-        description:
-            "I'm now a full-stack developer working as a freelancer. My stack includes React, Next.js, TypeScript, Tailwind, Prisma and MongoDB. I'm open to full-time opportunities.",
+            "I'm now a full-stack developer working as a freelancer. My stack includes React, Next.js, TypeScript, Tailwind, Firebase, MongoDB, etc... I'm open to full-time opportunities.",
         icon: React.createElement(FaReact),
-        date: "2021 - present",
+        date: "2023 - present",
+    },
+    {
+        title: "College graduation",
+        location: "Institute of Higher Computing of Mahdia (ISIMA)",
+        description:
+            "Graduated from ISIMA, Mahdia, specializing in computing, equipped with skills for innovative problem-solving in tech.",
+        icon: React.createElement(LuGraduationCap),
+
+        date: "2020 - 2023",
+    },
+    {
+        title: "Full-Stack Developer internship",
+        location: "@DATOM",
+        description:
+            "Full-Stack Developer internship at @DATOM, gaining hands-on experience in web development over 6 months.",
+        icon: React.createElement(CgWorkAlt),
+        date: "2023",
     },
 ] as const;
 
 export const projectsData = [
     {
-        title: "CorpComment",
+        title: "Do-it",
         description:
-            "I worked as a full-stack developer on this startup project for 2 years. Users can give public feedback to companies.",
-        tags: ["React", "Next.js", "MongoDB", "Tailwind", "Prisma"],
-        imageUrl: corpcommentImg,
+            "A cross-platform task manager designed for learning. It offers a user-friendly interface for effortless task creation, organization, and tracking.",
+        tags: ["Expo", "ReactNative", "Tailwind", "Redux ", "Sqlite"],
+        imageUrl: todoapp,
+        sourceCode: "https://github.com/Chamesss/Do-It"
     },
     {
-        title: "rmtDev",
+        title: "EchoVerse",
         description:
-            "Job board for remote developer jobs. I was the front-end developer. It has features like filtering, sorting and pagination.",
-        tags: ["React", "TypeScript", "Next.js", "Tailwind", "Redux"],
-        imageUrl: rmtdevImg,
+            "EchoVerse: A full-stack project for learning. It's a Messenger (Meta clone) where users can log in, chat, and send messages while appearing online.",
+        tags: ["React", "Chakra UI", "Socket IO", "Nodejs ", "MongoDB"],
+        imageUrl: chatapp,
+        sourceCode: "https://github.com/Chamesss/EchoVerse"
     },
     {
-        title: "Word Analytics",
+        title: "Annonce",
         description:
-            "A public web app for quick analytics on text. It shows word count, character count and social media post limits.",
-        tags: ["React", "Next.js", "SQL", "Tailwind", "Framer"],
-        imageUrl: wordanalyticsImg,
+            "For my final project, I developed a web app called <<Annonce>> where users can publish and sell items. The app uses geolocation for enhanced product proximity.",
+        tags: ["React", "Nodejs", "OpenStreetMaps", "MongoDB", "Microsoft Azure"],
+        imageUrl: annonce,
+        sourceCode: "https://github.com/Chamesss?tab=repositories"
     },
 ] as const;
 
@@ -94,14 +98,17 @@ export const skillsData = [
     "Node.js",
     "Git",
     "Tailwind",
-    "Prisma",
+    "ChakraUI",
+    "NextUI",
     "MongoDB",
     "Redux",
-    "GraphQL",
-    "Apollo",
-    "Express",
-    "PostgreSQL",
-    "Python",
-    "Django",
+    "SCSS",
+    "Expo",
+    "ReactNative",
+    "Vite",
+    "Hooks",
     "Framer Motion",
+    "Firebase",
+    "OpenStreetMaps API",
+    "GoogleMapsAPI"
 ] as const;

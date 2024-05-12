@@ -12,7 +12,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ChamseDin Azouz | Portfolio",
-  description: "My portfolio",
+  description:
+    "I am a full-stack web developer. This portfolio showcases my work.",
 };
 
 export default function RootLayout({
@@ -22,6 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="!scroll-smooth">
+      <meta name="author" content="ChamseDin Azouz" />
+      <meta property="og:title" content="ChamseDin Azouz | Portfolio" />
+      <meta property="og:type" content="Portfolio" />
+      <meta property="og:url" content="https://chamsedin-azouz.vercel.app/" />
+      <meta
+        property="og:image"
+        content="https://chamsedin-azouz.vercel.app/_next/image?url=%2Fopengraph.png&w=640&q=95"
+      />
       <body
         className={`${inter.className} bg-gray-50 text-gray-950 relative pt-28 sm:pt-36 dark:bg-gray-900 dark:text-gray-50 dark:text-opacity-90`}
       >

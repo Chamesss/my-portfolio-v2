@@ -46,7 +46,7 @@ export const experiencesData = [
         title: "College graduation",
         location: "Institute of Higher Computing of Mahdia (ISIMA)",
         description:
-            "Graduated from ISIMA, Mahdia, specializing in computing, equipped with skills for innovative problem-solving in tech.",
+            "Graduated from ISI Mahdia, specializing in computing, equipped with skills for innovative problem-solving in tech.",
         icon: React.createElement(LuGraduationCap),
 
         date: "2020 - 2023",
@@ -66,7 +66,7 @@ export const projectsData = [
         title: "Do-it",
         description:
             "A cross-platform task manager designed for learning. It offers a user-friendly interface for effortless task creation, organization, and tracking.",
-        tags: ["Expo", "ReactNative", "Tailwind", "Redux ", "Sqlite"],
+        tags: ["Expo", "ReactNative", "Tailwind CSS", "Redux ", "Sqlite"],
         imageUrl: todoapp,
         sourceCode: "https://github.com/Chamesss/Do-It"
     },

@@ -81,7 +81,7 @@ export const projectsData = [
     {
         title: "Annonce",
         description:
-            "For my final project, I developed a web app called <<Annonce>> where users can publish and sell items. The app uses geolocation for enhanced product proximity.",
+            "For my end-of-studies project,, I developed a web app called <<Annonce>> where users can publish and sell items. The app uses geolocation for enhanced product proximity.",
         tags: ["React", "Nodejs", "OpenStreetMaps", "MongoDB", "Microsoft Azure"],
         imageUrl: annonce,
         sourceCode: "https://github.com/Chamesss?tab=repositories"

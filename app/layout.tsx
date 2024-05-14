@@ -25,7 +25,10 @@ export default function RootLayout({
     <html lang="en" className="!scroll-smooth">
       <meta name="author" content="ChamseDin Azouz" />
       <meta property="og:title" content="ChamseDin Azouz | Portfolio" />
-      <meta property="og:type" content="Portfolio" />
+      <meta
+        property="og:description "
+        content="I am a full-stack web developer. This portfolio showcases my work."
+      />
       <meta property="og:url" content="https://chamsedin-azouz.vercel.app/" />
       <meta
         property="og:image"

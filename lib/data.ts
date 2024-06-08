@@ -53,7 +53,7 @@ export const experiencesData = [
     },
     {
         title: "Full-Stack Developer internship",
-        location: "@DATOM",
+        location: "@Datum - Tech",
         description:
             "Full-Stack Developer internship at @DATOM, gaining hands-on experience in web development over 6 months.",
         icon: React.createElement(CgWorkAlt),

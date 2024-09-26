@@ -1,8 +1,8 @@
 "use client";
 import { projectsData } from "@/lib/data";
-import { useScroll, motion, useTransform } from "framer-motion";
-import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
+import React, { useRef } from "react";
 import { TbExternalLink } from "react-icons/tb";
 
 type Props = (typeof projectsData)[number];
@@ -39,7 +39,7 @@ export default function Project({
               target="_blank"
               className="group bg-gray-900 text-white text-sm px-[0.75rem] py-[0.3rem] flex items-center justify-start gap-2 rounded-full outline-none focus:scale-110 hover:scale-105 hover:bg-gray-950 active:scale-[1.02] transition"
             >
-              <small className="flex flex-row items-center justify-center gap-2">
+              <small className="flex flex-row text-nowrap items-center justify-center gap-2">
                 Source code
                 <TbExternalLink />
               </small>

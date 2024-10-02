@@ -38,8 +38,15 @@ export const experiencesData = [
   {
     title: 'MERN Stack Developer',
     location: 'Tradrly',
-    description:
-      "I'm currently working at Tradrly, an innovative IT startup, where my skills have been elevated to the next level. Here, I have the opportunity to tackle complex challenges and contribute to exciting projects, showcasing my expertise and passion for technology.",
+    description: (
+      <p style={{ fontSize: '0.9rem' }}>
+        Currently at Tradrly, I tackle complex challenges and contribute to exciting projects that
+        showcase my expertise and passion for technology. Within a short time, I was promoted to
+        <b style={{ color: '#ef4444' }}> project manager</b>, leading key initiatives and driving
+        results. My leadership has sparked discussions about advancing to a{' '}
+        <b style={{ color: '#ef4444' }}>Chief Technology Officer (CTO)</b> role in the near future.
+      </p>
+    ),
     icon: React.createElement(FaReact),
     date: '2024 - present'
   },

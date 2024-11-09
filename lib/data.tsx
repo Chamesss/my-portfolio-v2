@@ -36,16 +36,16 @@ export const links = [
 
 export const experiencesData = [
   {
-    title: 'MERN Stack Developer',
+    title: 'MERN Stack Developer / Project Manager',
     location: 'Tradrly',
     description: (
-      <p style={{ fontSize: '0.9rem' }}>
+      <span style={{ fontSize: '0.9rem' }}>
         Currently at Tradrly, I tackle complex challenges and contribute to exciting projects that
         showcase my expertise and passion for technology. Within a short time, I was promoted to
         <b style={{ color: '#ef4444' }}> project manager</b>, leading key initiatives and driving
         results. My leadership has sparked discussions about advancing to a{' '}
         <b style={{ color: '#ef4444' }}>Chief Technology Officer (CTO)</b> role in the near future.
-      </p>
+      </span>
     ),
     icon: React.createElement(FaReact),
     date: '2024 - present'
@@ -137,11 +137,16 @@ export const skillsData = [
   'Electron.js',
   'Hooks',
   'Redux',
+  'Zustand',
   'CSS',
   'UI Libraries',
   'Tailwind CSS',
   'Node.js',
+  'Express.js',
+  'Socket.io',
   'MongoDB',
+  'Docker',
+  'CPanel',
   'Firebase',
   'Git',
   'Geocode APIs',

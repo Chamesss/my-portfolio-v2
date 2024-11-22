@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  input[type='range'] {
+    @apply h-1 appearance-none rounded-lg bg-gray-600;
+  }
+
+  input[type='range']::-webkit-slider-thumb {
+    @apply h-3 w-3 cursor-pointer appearance-none rounded-full bg-blue-500;
+  }
+
+  input[type='range']::-moz-range-thumb {
+    @apply h-3 w-3 cursor-pointer rounded-full border-none bg-blue-500;
+  }
+
+  video::-webkit-media-controls {
+    @apply hidden;
+  }
+}
+
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+
 html {
   --line-color: #e5e7eb;
 }

@@ -10,7 +10,7 @@ export default function VideoSection({ className = '' }: { className?: string })
       <p className="mb-8">
         Here’s a glimpse of the many web components I’ve crafted—have a quick glance!
       </p>
-      <VideoPlayer src="./web-components.mp4" />
+      <VideoPlayer src="/web-components.mp4" />
     </div>
   )
 }

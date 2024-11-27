@@ -10,14 +10,15 @@ export default function VideoSection({ className = '' }: { className?: string })
       <p className="mb-8">
         Here’s a glimpse of the many web components I’ve crafted—have a quick glance!
       </p>
-      <iframe
-        title="vimeo-player"
-        src="https://player.vimeo.com/video/1032355275?h=850126fdaa"
-        width="640"
-        height="360"
-        frameBorder={0}
-        allowFullScreen
-      ></iframe>
+      <div className="relative w-full pb-[56.25%]">
+        <iframe
+          title="vimeo-player"
+          src="https://player.vimeo.com/video/1032355275?h=850126fdaa"
+          frameBorder={0}
+          allowFullScreen
+          className="absolute left-0 top-0 h-full w-full"
+        />
+      </div>
       {/* <VideoPlayer src="https://player.vimeo.com/video/1032355275?h=850126fdaa" /> */}
     </div>
   )

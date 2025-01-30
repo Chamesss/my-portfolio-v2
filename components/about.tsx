@@ -6,7 +6,7 @@ import SectionHeading from './section-heading'
 import VideoSection from './video-section'
 
 export default function About() {
-  const { ref } = useSectionInView('About')
+  const { ref } = useSectionInView('About', 0.2)
 
   return (
     <motion.section

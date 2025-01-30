@@ -36,19 +36,34 @@ export const links = [
 
 export const experiencesData = [
   {
-    title: 'MERN Stack Developer / Project Manager',
-    location: 'Tradrly',
+    title: 'Web Developer',
+    location: 'Quetratech, Tunisia - Mahdia',
     description: (
       <span style={{ fontSize: '0.9rem' }}>
-        Currently at Tradrly, I tackle complex challenges and contribute to exciting projects that
-        showcase my expertise and passion for technology. Within a short time, I was promoted to
-        <b style={{ color: '#ef4444' }}> project manager</b>, leading key initiatives and driving
-        results. My leadership has sparked discussions about advancing to a{' '}
-        <b style={{ color: '#ef4444' }}>Chief Technology Officer (CTO)</b> role in the near future.
+        At <b className="text-emerald-700">Quetratech</b>, I demonstrated my expertise as a Web
+        Developer by building scalable projects from the ground up using React. I delivered
+        customized features, <b style={{ color: 'rgb(5 150 105)' }}>optimized performance</b>, and
+        implemented <b style={{ color: 'rgb(5 150 105)' }}>modern development approaches</b> to
+        create efficient, user-centric solutions.
       </span>
     ),
-    icon: React.createElement(FaReact),
+    icon: React.createElement(CgWorkAlt),
     date: '2024 - present'
+  },
+  {
+    title: 'MERN Stack Developer / Project Manager',
+    location: 'Tradrly, Tunisia - Mahdia',
+    description: (
+      <span style={{ fontSize: '0.9rem' }}>
+        At <b>Tradrly</b>, I built a production project from scratch using the MERN stack and
+        Electron.js. It successfully reached production, delivering robust features. My fast
+        learning and problem-solving skills ensured a{' '}
+        <b style={{ color: 'rgb(225 29 72)' }}>scalable</b> and{' '}
+        <b style={{ color: 'rgb(225 29 72)' }}>efficient</b> solution.
+      </span>
+    ),
+    icon: React.createElement(CgWorkAlt),
+    date: '2024'
   },
   {
     title: 'Full-Stack Developer Freelance',

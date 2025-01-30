@@ -29,7 +29,15 @@ export default function Intro() {
               type: 'tween',
               duration: 0.2
             }}
+            className="group relative"
           >
+            <div className="absolute -inset-2 animate-pulse rounded-full bg-gradient-to-r from-pink-600 to-sky-600 opacity-60 blur-xl transition duration-300 group-hover:opacity-100"></div>
+
+            {/* Middle glow */}
+            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 opacity-65 blur-lg transition duration-300 group-hover:opacity-100"></div>
+
+            {/* Inner glow */}
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-400 to-sky-400 opacity-70 blur transition duration-300 group-hover:opacity-100"></div>
             <Image
               src={'/mypicture.jpg'}
               alt="profile-picture"
@@ -37,7 +45,7 @@ export default function Intro() {
               height={640}
               quality={95}
               priority={true}
-              className="h-[10rem] w-[10rem] rounded-full border-[0.1rem] border-white object-cover shadow-xl"
+              className="relative h-[10rem] w-[10rem] rounded-full border-[0.1rem] object-cover shadow-xl"
             />
           </motion.div>
           <motion.span

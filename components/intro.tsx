@@ -29,17 +29,10 @@ export default function Intro() {
               type: 'tween',
               duration: 0.2
             }}
-            className="group relative"
+            className="relative"
           >
-            <div className="absolute -inset-2 animate-pulse rounded-full bg-gradient-to-r from-pink-600 to-sky-600 opacity-60 blur-xl transition duration-300 group-hover:opacity-100"></div>
-
-            {/* Middle glow */}
-            <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 opacity-65 blur-lg transition duration-300 group-hover:opacity-100"></div>
-
-            {/* Inner glow */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-pink-400 to-sky-400 opacity-70 blur transition duration-300 group-hover:opacity-100"></div>
             <Image
-              src={'/mypicture.jpg'}
+              src={'/mypicture.png'}
               alt="profile-picture"
               width={640}
               height={640}
@@ -64,7 +57,7 @@ export default function Intro() {
         </div>
       </div>
       <motion.span
-        className="mb-10 mt-8 flex min-h-[14rem] max-w-[50rem] flex-col items-center justify-start px-4 text-xl font-medium !leading-[1.5] sm:min-h-[9rem] sm:text-2xl"
+        className="mt-8 flex min-h-[12rem] max-w-[50rem] flex-col items-center justify-start px-4 text-lg font-medium !leading-[1.5] text-black dark:text-white sm:mb-10 sm:min-h-[14rem] sm:text-2xl"
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -72,9 +65,7 @@ export default function Intro() {
           sequence={[
             "Hello, I'm Chamsedin Azouz, a passionate full stack developer ready to innovate and create.",
             1000,
-            () => {
-              setTerminated(true)
-            }
+            () => setTerminated(true)
           ]}
           wrapper="span"
           cursor={true}
@@ -90,9 +81,7 @@ export default function Intro() {
               2000,
               "Building web applications is not just my job; it's my craft. Let's create something extraordinary together.",
               2000,
-              () => {
-                setTerminated(true)
-              }
+              () => setTerminated(true)
             ]}
             wrapper="span"
             cursor={true}
@@ -112,7 +101,7 @@ export default function Intro() {
         }}
       >
         <Link
-          className="group flex items-center gap-2 text-nowrap rounded-full bg-gray-900 px-7 py-3 text-white outline-none transition hover:scale-110 hover:bg-gray-950 focus:scale-110 active:scale-105"
+          className="group flex items-center gap-2 text-nowrap rounded-full bg-gray-950/50 px-7 py-3 text-white outline-none transition hover:scale-110 hover:bg-gray-950 focus:scale-110 active:scale-105"
           href="#contact"
           onClick={() => {
             setActiveSection('Contact')

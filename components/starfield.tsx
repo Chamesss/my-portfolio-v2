@@ -121,7 +121,6 @@ export default function StarField() {
       const time = Date.now() * 0.001
       starMaterial.uniforms.time.value = time
 
-      // More horizontal rotation with adjusted direction
       stars.rotation.x += 0.0005 // Reduced for more horizontal movement
       stars.rotation.y -= 0.005 // Increased for stronger horizontal rotation
       stars.rotation.z += 0.0002 // Added subtle z rotation for more dynamic movement

@@ -1,11 +1,30 @@
 import todoapp from '@/public/Todoapp.png'
 import annonce from '@/public/annonce.png'
 import chatapp from '@/public/chatapp.png'
+import imtLogo from '@/public/projects/logos/imt.png'
+import wysLogo from '@/public/projects/logos/wys.png'
+import skaLogo from '@/public/projects/logos/ska.png'
 import screenshot from '@/public/screenshot.png'
 import React from 'react'
 import { CgWorkAlt } from 'react-icons/cg'
 import { FaReact } from 'react-icons/fa'
 import { LuGraduationCap } from 'react-icons/lu'
+
+import imtCalendar from '@/public/projects/imt/imt_calendar.png'
+import imtCreateProject from '@/public/projects/imt/imt_create_project.png'
+import imtDashboard from '@/public/projects/imt/imt_dashboard.png'
+import imtKanbanBlack from '@/public/projects/imt/imt_kanban_black.png'
+import imtKanbanWhite from '@/public/projects/imt/imt_kanban_white.png'
+import imtTaskManagement from '@/public/projects/imt/imt_task_management.png'
+
+import skaCreateQuote from '@/public/projects/ska/ska_create_devis.png'
+import skaCreateProduct from '@/public/projects/ska/ska_create_product.png'
+import skaInvoice from '@/public/projects/ska/ska_invoice.png'
+import skaProduct from '@/public/projects/ska/ska_product.png'
+
+import wysAuction from '@/public/projects/wys/wys_auction.png'
+import wysHome from '@/public/projects/wys/wys_home.png'
+import wysSearch from '@/public/projects/wys/wys_search.png'
 
 export const links = [
   {
@@ -19,6 +38,10 @@ export const links = [
   {
     name: 'Experience',
     hash: '#experience'
+  },
+  {
+    name: 'professional-projects',
+    hash: '#professional-projects'
   },
   {
     name: 'Projects',
@@ -142,6 +165,56 @@ export const projectsData = [
     sourceCode: 'https://github.com/Chamesss?tab=repositories'
   }
 ] as const
+
+// Professional Projects Data
+export const professionalProjectsData = [
+  {
+    id: 1,
+    header: 'WYS',
+    logo: wysLogo,
+    title: 'World Yacht Store',
+    description: [
+      'A yacht & berth marketplace that simplifies live auctions, sales, and charters for MN LAND & SEA S.R.L.',
+      'Empowers users to easily bid, buy, or charter yachts online, streamlining a previously complex process.',
+      'Widely adopted with positive user feedback, improving efficiency and customer satisfaction across the platform.'
+    ],
+    images: [wysHome, wysSearch, wysAuction],
+    liveUrl: 'https://worldyachtstore.com'
+  },
+  {
+    id: 2,
+    header: 'SKA',
+    logo: skaLogo,
+    title: 'Skartisanal',
+    description: [
+      'A cross-platform desktop app that helps businesses seamlessly manage inventory and WooCommerce products.',
+      'Simplifies daily operations with product control, client management, and invoicing, saving time and reducing errors.',
+      'Received positive client feedback for improving workflow efficiency and streamlining online store management.'
+    ],
+    images: [skaCreateProduct, skaProduct, skaCreateQuote, skaInvoice],
+    liveUrl: null
+  },
+  {
+    id: 3,
+    header: 'IMT',
+    logo: imtLogo,
+    title: 'Intelligent Management Tracker (IMT)',
+    description: [
+      'A B2B productivity tracker delivered as an alpha release, designed to monitor work time, activity, and project progress for freelancers and teams.',
+      'Helps managers and businesses gain actionable insights through performance tracking, screenshots, and task management.',
+      'Improves accountability and efficiency, allowing teams to focus on results while keeping transparent records of work.'
+    ],
+    images: [
+      imtDashboard,
+      imtKanbanBlack,
+      imtKanbanWhite,
+      imtTaskManagement,
+      imtCalendar,
+      imtCreateProject
+    ],
+    liveUrl: 'https://im-tracker.net/'
+  }
+]
 
 export const skillsData = [
   'Javascript',

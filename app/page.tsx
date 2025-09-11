@@ -2,6 +2,7 @@ import About from '@/components/about'
 import Contact from '@/components/contact'
 import Experience from '@/components/experience'
 import Intro from '@/components/intro'
+import ProfessionalProjectShowcase from '@/components/professional-projects'
 import Projects from '@/components/projects'
 import SectionDivider from '@/components/section-divider'
 import Skills from '@/components/skills'
@@ -14,6 +15,7 @@ export default function Home() {
       <SectionDivider className="mb-36 mt-24 sm:mb-60 sm:mt-40" />
       <About />
       <Experience />
+      <ProfessionalProjectShowcase />
       <Projects />
       <Skills />
       <Contact />

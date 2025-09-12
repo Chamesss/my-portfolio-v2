@@ -1,10 +1,18 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, X, Maximize2 } from 'lucide-react'
+import { X, Maximize2 } from 'lucide-react'
 import type React from 'react'
 import Image, { type StaticImageData } from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Keyboard, A11y } from 'swiper/modules'
+import type { Swiper as SwiperType } from 'swiper'
+
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 interface Props {
   images: StaticImageData[] | string[]
@@ -12,7 +20,10 @@ interface Props {
   current: number
   inView: boolean
   maxHeight?: number
+  minHeight?: number
   aspectRatio?: 'auto' | 'square' | 'video' | 'portrait'
+  adaptiveHeight?: boolean // Enable/disable dynamic height adaptation
+  animateHeight?: boolean // Enable/disable height transition animation
 }
 
 export default function SingleItemCarousel({
@@ -21,81 +32,145 @@ export default function SingleItemCarousel({
   current,
   inView,
   maxHeight = 500,
-  aspectRatio = 'auto'
+  minHeight,
+  aspectRatio = 'auto',
+  adaptiveHeight = true,
+  animateHeight = false
 }: Props) {
-  const [imageHeights, setImageHeights] = useState<number[]>([])
-  const [containerHeight, setContainerHeight] = useState(maxHeight)
   const [isFullscreen, setIsFullscreen] = useState(false)
-
-  const goToSlide = (index: number) => setCurrent(index)
-  const prevSlide = () => setCurrent((prev) => (prev - 1 + images.length) % images.length)
-  const nextSlide = () => setCurrent((prev) => (prev + 1) % images.length)
+  const [isMobile, setIsMobile] = useState(false)
+  const [imageHeights, setImageHeights] = useState<number[]>([])
+  const [containerHeight, setContainerHeight] = useState<number>(() => {
+    const initialIsMobile = typeof window !== 'undefined' && window.innerWidth < 768
+    return initialIsMobile ? 280 : 350
+  })
+  const swiperRef = useRef<SwiperType>()
+  const fullscreenSwiperRef = useRef<SwiperType>()
 
   const openFullscreen = () => setIsFullscreen(true)
   const closeFullscreen = () => setIsFullscreen(false)
 
+  // Detect mobile viewport
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isFullscreen) {
-        closeFullscreen()
-      }
-      if (isFullscreen) {
-        if (event.key === 'ArrowLeft') {
-          prevSlide()
-        } else if (event.key === 'ArrowRight') {
-          nextSlide()
-        }
-      }
-    }
+    const checkIsMobile = () => setIsMobile(window.innerWidth < 768)
+    checkIsMobile()
+    window.addEventListener('resize', checkIsMobile)
+    return () => window.removeEventListener('resize', checkIsMobile)
+  }, [])
 
+  // Sync external current state with Swiper
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.activeIndex !== current)
+      swiperRef.current.slideTo(current)
+  }, [current])
+
+  // Sync fullscreen swiper when opened
+  useEffect(() => {
+    if (isFullscreen && fullscreenSwiperRef.current) fullscreenSwiperRef.current.slideTo(current, 0)
+  }, [isFullscreen, current])
+
+  // Handle keyboard navigation for fullscreen
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) =>
+      event.key === 'Escape' && isFullscreen && closeFullscreen()
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFullscreen])
 
   useEffect(() => {
-    if (isFullscreen) {
-      // Disable scroll
-      document.body.style.overflow = 'hidden'
-    } else {
-      // Re-enable scroll
-      document.body.style.overflow = 'unset'
-    }
-
-    // Cleanup function to ensure scroll is re-enabled if component unmounts
+    if (isFullscreen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = 'unset'
     return () => {
       document.body.style.overflow = 'unset'
     }
   }, [isFullscreen])
 
-  const getContainerHeight = () => {
-    if (aspectRatio === 'square') return 384
-    if (aspectRatio === 'video') return 216 // 16:9 for 384px width
-    if (aspectRatio === 'portrait') return 512 // 3:4 for 384px width
-    if (aspectRatio === 'auto' && imageHeights[current]) {
-      return Math.min(imageHeights[current], maxHeight)
+  const getContainerHeight = useCallback(() => {
+    if (aspectRatio === 'auto' && adaptiveHeight && imageHeights[current] !== undefined) {
+      const calculatedHeight = imageHeights[current]
+      const maxConstraint = isMobile ? Math.min(maxHeight, 500) : maxHeight
+      return Math.min(calculatedHeight, maxConstraint)
     }
+    if (aspectRatio === 'auto' && adaptiveHeight) return isMobile ? 280 : 350
     return maxHeight
+  }, [aspectRatio, adaptiveHeight, imageHeights, current, isMobile, maxHeight])
+
+  // Handle image load to calculate dynamic height
+  const handleImageLoad = useCallback(
+    (index: number, event: React.SyntheticEvent<HTMLImageElement>) => {
+      if (aspectRatio !== 'auto' || !adaptiveHeight) return
+      const renderedHeight = event.currentTarget.height
+      setImageHeights((prev) => {
+        if (prev[index] === renderedHeight) return prev
+        const newHeights = [...prev]
+        newHeights[index] = renderedHeight
+        return newHeights
+      })
+    },
+    [aspectRatio, adaptiveHeight]
+  )
+
+  // Update container height when current image changes with debounced optimization
+  useEffect(() => {
+    const newHeight = getContainerHeight()
+    if (newHeight !== containerHeight) setContainerHeight(newHeight)
+  }, [getContainerHeight, containerHeight])
+
+  const handleSlideChange = (swiper: SwiperType) => setCurrent(swiper.activeIndex)
+
+  const swiperConfig = {
+    modules: [Navigation, Pagination, Keyboard, A11y],
+    spaceBetween: 0,
+    slidesPerView: 1,
+    navigation: {
+      nextEl: '.swiper-button-next-custom',
+      prevEl: '.swiper-button-prev-custom'
+    },
+    pagination: {
+      el: '.swiper-pagination-custom',
+      clickable: true,
+      bulletClass: 'swiper-pagination-bullet-custom',
+      bulletActiveClass: 'swiper-pagination-bullet-active-custom'
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true
+    },
+    a11y: {
+      enabled: true
+    },
+    speed: isMobile ? 200 : 300,
+    onSlideChange: handleSlideChange,
+    onSwiper: (swiper: SwiperType) => {
+      swiperRef.current = swiper
+    }
   }
 
-  useEffect(() => {
-    setContainerHeight(getContainerHeight())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, imageHeights, aspectRatio, maxHeight])
-
-  const handleImageLoad = (index: number, event: React.SyntheticEvent<HTMLImageElement>) => {
-    if (aspectRatio !== 'auto') return
-
-    const img = event.currentTarget
-    const containerWidth = 384 // max-w-sm is 384px
-    const imgAspectRatio = img.naturalHeight / img.naturalWidth
-    const calculatedHeight = containerWidth * imgAspectRatio
-
-    setImageHeights((prev) => {
-      const newHeights = [...prev]
-      newHeights[index] = calculatedHeight
-      return newHeights
-    })
+  const fullscreenSwiperConfig = {
+    modules: [Navigation, Pagination, Keyboard, A11y],
+    spaceBetween: 0,
+    slidesPerView: 1,
+    navigation: {
+      nextEl: '.swiper-button-next-fullscreen',
+      prevEl: '.swiper-button-prev-fullscreen'
+    },
+    pagination: {
+      el: '.swiper-pagination-fullscreen',
+      clickable: true,
+      bulletClass: 'swiper-pagination-bullet-fullscreen',
+      bulletActiveClass: 'swiper-pagination-bullet-active-fullscreen'
+    },
+    keyboard: {
+      enabled: true,
+      onlyInViewport: true
+    },
+    a11y: {
+      enabled: true
+    },
+    speed: isMobile ? 200 : 300,
+    initialSlide: current,
+    onSlideChange: handleSlideChange,
+    onSwiper: (swiper: SwiperType) => (fullscreenSwiperRef.current = swiper)
   }
 
   return (
@@ -104,84 +179,101 @@ export default function SingleItemCarousel({
         className="flex flex-col items-center justify-center"
         initial={{ x: 30, opacity: 0 }}
         animate={inView ? { x: 0, opacity: 1 } : { x: 30, opacity: 0 }}
-        transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
+        transition={{
+          duration: isMobile ? 0.4 : 0.6,
+          delay: isMobile ? 0.1 : 0.2,
+          ease: 'easeOut'
+        }}
+        style={{ transform: 'translateZ(0)' }}
       >
         <div className="relative w-full max-w-2xl">
-          <motion.div
-            className="relative min-h-[320px] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800"
-            animate={{ height: containerHeight }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+          <div
+            className="relative min-h-[350px] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800"
+            style={{
+              height: containerHeight,
+              transform: 'translateZ(0)', // Force hardware acceleration
+              willChange: adaptiveHeight && animateHeight ? 'height' : 'auto', // Only optimize when needed
+              transition:
+                adaptiveHeight && animateHeight
+                  ? isMobile
+                    ? 'height 150ms cubic-bezier(0.4, 0, 0.2, 1)'
+                    : 'height 200ms cubic-bezier(0.4, 0, 0.2, 1)'
+                  : 'none'
+            }}
           >
-            <div className="relative h-full w-full">
+            <Swiper {...swiperConfig} className="h-full w-full">
               {images.map((image, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-transform duration-300 ease-in-out ${
-                    index === current
-                      ? 'translate-x-0'
-                      : index < current
-                        ? '-translate-x-full'
-                        : 'translate-x-full'
-                  }`}
-                >
-                  <div className="flex h-full w-full items-center justify-center p-2">
-                    <div className="group relative cursor-pointer" onClick={openFullscreen}>
-                      <Image
-                        src={image || '/placeholder.svg'}
-                        width={800}
-                        height={600}
-                        alt={`Image ${index + 1}`}
-                        className="max-h-[480px] max-w-full rounded-lg object-contain"
-                        priority={index === current}
-                        onLoad={(e) => handleImageLoad(index, e)}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/20 opacity-0 transition-opacity group-hover:opacity-100">
-                        <Maximize2 className="h-6 w-6 text-white drop-shadow-lg" />
+                <SwiperSlide key={index} className="flex items-center justify-center p-2">
+                  <div
+                    className="group relative flex h-full w-full cursor-pointer items-center justify-center"
+                    onClick={openFullscreen}
+                  >
+                    <Image
+                      src={image || '/placeholder.svg'}
+                      width={800}
+                      height={600}
+                      alt={`Image ${index + 1}`}
+                      className="max-h-[480px] max-w-full rounded-lg object-contain"
+                      priority={index === current}
+                      loading={Math.abs(index - current) <= 1 ? 'eager' : 'lazy'}
+                      onLoad={(e) => handleImageLoad(index, e)}
+                    />
+                    {!isMobile && (
+                      <div className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/50 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
+                        <Maximize2 className="h-4 w-4 text-white" />
                       </div>
-                    </div>
+                    )}
                   </div>
-                </div>
+                </SwiperSlide>
               ))}
-            </div>
-          </motion.div>
+            </Swiper>
 
-          {/* Navigation buttons */}
-          <motion.button
-            onClick={prevSlide}
-            className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95 dark:bg-gray-900/90 dark:hover:bg-gray-900"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="h-5 w-5 text-gray-700 dark:text-white" />
-          </motion.button>
+            {/* Custom navigation buttons */}
+            <button
+              className="swiper-button-prev-custom absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95 dark:bg-gray-900/90 dark:hover:bg-gray-900"
+              aria-label="Previous image"
+            >
+              <svg
+                className="h-5 w-5 text-gray-700 dark:text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
 
-          <motion.button
-            onClick={nextSlide}
-            className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95 dark:bg-gray-900/90 dark:hover:bg-gray-900"
-            aria-label="Next image"
-          >
-            <ChevronRight className="h-5 w-5 text-gray-700 dark:text-white" />
-          </motion.button>
-        </div>
+            <button
+              className="swiper-button-next-custom absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-white active:scale-95 dark:bg-gray-900/90 dark:hover:bg-gray-900"
+              aria-label="Next image"
+            >
+              <svg
+                className="h-5 w-5 text-gray-700 dark:text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
 
-        {/* Indicators */}
-        <div className="mt-4 flex space-x-1.5">
-          {images.map((image, i) => (
-            <motion.button
-              key={`indicator-${i}`}
-              onClick={() => goToSlide(i)}
-              className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                i === current
-                  ? 'scale-125 bg-gray-800 dark:bg-white'
-                  : 'bg-gray-300 hover:bg-gray-400 dark:bg-white/30 dark:hover:bg-white/50'
-              }`}
-              whileHover={{ scale: i === current ? 1.25 : 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={`Go to image ${i + 1}`}
-            />
-          ))}
+          {/* Custom pagination */}
+          <div className="swiper-pagination-custom mt-4 flex justify-center space-x-1.5"></div>
         </div>
       </motion.div>
 
+      {/* Fullscreen modal */}
       <AnimatePresence>
         {isFullscreen && (
           <motion.div
@@ -189,76 +281,168 @@ export default function SingleItemCarousel({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: isMobile ? 0.2 : 0.3 }}
             onClick={closeFullscreen}
           >
             <div className="relative flex h-full w-full items-center justify-center">
-              <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+              <Swiper
+                {...fullscreenSwiperConfig}
+                className="flex h-full w-full items-center justify-center"
+              >
                 {images.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`duration-400 absolute inset-0 flex items-center justify-center transition-transform ease-in-out ${
-                      index === current
-                        ? 'translate-x-0'
-                        : index < current
-                          ? '-translate-x-full'
-                          : 'translate-x-full'
-                    }`}
-                    onClick={(e) => e.stopPropagation()}
+                  <SwiperSlide
+                    key={`fullscreen-${index}`}
+                    className="flex h-full w-full items-center justify-center"
                   >
-                    <Image
-                      src={image || '/placeholder.svg'}
-                      width={1920}
-                      height={1080}
-                      alt={`Image ${index + 1} - Fullscreen`}
-                      className="max-h-[90vh] max-w-[90vw] object-contain"
-                      priority={Math.abs(index - current) <= 1}
-                    />
-                  </div>
+                    <div
+                      className="flex h-full w-full items-center justify-center"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Image
+                        src={image || '/placeholder.svg'}
+                        width={1920}
+                        height={1080}
+                        alt={`Image ${index + 1} - Fullscreen`}
+                        className="max-h-[90vh] max-w-[90vw] object-contain"
+                        priority={Math.abs(index - current) <= 1}
+                        loading={Math.abs(index - current) <= 1 ? 'eager' : 'lazy'}
+                      />
+                    </div>
+                  </SwiperSlide>
                 ))}
-              </div>
+              </Swiper>
             </div>
 
-            <motion.button
-              onClick={closeFullscreen}
-              className="z-60 absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                closeFullscreen()
+              }}
+              className="absolute right-4 top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
               aria-label="Close fullscreen"
             >
-              <X className="h-6 w-6 text-white transition-all group-hover:scale-105 group-active:scale-95" />
-            </motion.button>
+              <X className="h-6 w-6 text-white" />
+            </button>
 
             {/* Fullscreen navigation */}
-            <motion.button
-              onClick={(e) => {
-                e.stopPropagation()
-                prevSlide()
-              }}
-              className="z-60 group absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
+            <button
+              className="swiper-button-prev-fullscreen absolute left-4 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
               aria-label="Previous image"
+              onClick={(e) => e.stopPropagation()}
             >
-              <ChevronLeft className="h-6 w-6 text-white transition-all group-hover:scale-105 group-active:scale-95" />
-            </motion.button>
+              <svg
+                className="h-6 w-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
 
-            <motion.button
-              onClick={(e) => {
-                e.stopPropagation()
-                nextSlide()
-              }}
-              className="z-60 absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
+            <button
+              className="swiper-button-next-fullscreen absolute right-4 top-1/2 z-50 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-neutral-800 transition-all hover:bg-neutral-800/80"
               aria-label="Next image"
+              onClick={(e) => e.stopPropagation()}
             >
-              <ChevronRight className="h-6 w-6 text-white transition-all group-hover:scale-105 group-active:scale-95" />
-            </motion.button>
+              <svg
+                className="h-6 w-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
 
             {/* Image counter */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-sm">
+            <div
+              className="absolute bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-sm"
+              onClick={(e) => e.stopPropagation()}
+            >
               <span className="text-sm text-white">
                 {current + 1} / {images.length}
               </span>
             </div>
+
+            {/* Fullscreen pagination */}
+            <div
+              className="swiper-pagination-fullscreen absolute bottom-16 left-1/2 z-50 -translate-x-1/2"
+              onClick={(e) => e.stopPropagation()}
+            ></div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style jsx global>{`
+        .swiper-pagination-bullet-custom {
+          width: 8px;
+          height: 8px;
+          background: rgb(209 213 219);
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.3s;
+          margin: 0 3px;
+        }
+
+        .swiper-pagination-bullet-active-custom {
+          background: rgb(31 41 55);
+          transform: scale(1.25);
+        }
+
+        .dark .swiper-pagination-bullet-custom {
+          background: rgba(255, 255, 255, 0.3);
+        }
+
+        .dark .swiper-pagination-bullet-active-custom {
+          background: white;
+        }
+
+        .swiper-pagination-bullet-fullscreen {
+          width: 10px;
+          height: 10px;
+          background: rgba(255, 255, 255, 0.5);
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.3s;
+          margin: 0 4px;
+        }
+
+        .swiper-pagination-bullet-active-fullscreen {
+          background: white;
+          transform: scale(1.2);
+        }
+
+        /* Ensure fullscreen Swiper slides are centered */
+        .swiper-slide {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* Remove default Swiper button styles since we use custom ones */
+        .swiper-button-next,
+        .swiper-button-prev {
+          display: none !important;
+        }
+
+        @media (max-width: 768px) {
+          .swiper-pagination-bullet-custom,
+          .swiper-pagination-bullet-fullscreen {
+            transition-duration: 0.15s;
+          }
+        }
+      `}</style>
     </>
   )
 }

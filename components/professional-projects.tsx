@@ -134,7 +134,7 @@ export default function ProfessionalProjectShowcase() {
                 {project.description.map((paragraph, index) => (
                   <motion.p
                     key={`desc-${currentProject}-${index}`}
-                    className="mb-4 text-left leading-relaxed text-gray-700 dark:text-white/80"
+                    className="mb-4 text-left text-sm leading-relaxed text-gray-700 dark:text-white/80 sm:text-base"
                     initial={{ opacity: 0 }}
                     animate={inView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
@@ -148,7 +148,7 @@ export default function ProfessionalProjectShowcase() {
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100"
+                      className="group rounded-full bg-gray-900 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 sm:text-sm"
                       initial={{ opacity: 0, y: 10 }}
                       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
                       transition={{ duration: 0.4, delay: 0.6 }}

@@ -154,7 +154,7 @@ export default function StarField() {
   return (
     <div
       ref={mountRef}
-      className="animate-gradient-x pointer-events-none absolute left-0 top-0 -z-10 h-[calc(100vh+4.5rem)] w-screen"
+      className="animate-gradient-x pointer-events-none absolute left-0 top-0 -z-10 h-[calc(100vh+4.5rem)] w-full"
       style={{
         background:
           theme === 'light'

@@ -31,3 +31,61 @@ html {
 html.dark {
   --line-color: rgba(255, 255, 255, 0.2);
 }
+
+.swiper-pagination-bullet-custom {
+  width: 8px;
+  height: 8px;
+  background: rgb(209 213 219);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 3px;
+}
+
+.swiper-pagination-bullet-active-custom {
+  background: rgb(31 41 55);
+  transform: scale(1.25);
+}
+
+.dark .swiper-pagination-bullet-custom {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.dark .swiper-pagination-bullet-active-custom {
+  background: white;
+}
+
+.swiper-pagination-bullet-fullscreen {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 4px;
+}
+
+.swiper-pagination-bullet-active-fullscreen {
+  background: white;
+  transform: scale(1.2);
+}
+
+/* Ensure fullscreen Swiper slides are centered */
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Remove default Swiper button styles since we use custom ones */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .swiper-pagination-bullet-custom,
+  .swiper-pagination-bullet-fullscreen {
+    transition-duration: 0.15s;
+  }
+}

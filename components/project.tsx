@@ -7,7 +7,7 @@ import { TbExternalLink } from 'react-icons/tb'
 
 type Props = (typeof projectsData)[number]
 
-export default function Project({ title, description, tags, imageUrl, sourceCode }: Props) {
+export default function Project({ title, description, tags, imageUrl, sourceCode, isProd }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -28,16 +28,18 @@ export default function Project({ title, description, tags, imageUrl, sourceCode
         <div className="flex h-full flex-col px-5 pb-7 pt-4 sm:ml-[1rem] sm:max-w-[55%] sm:pl-5 sm:pr-5 sm:pt-9 sm:group-even:ml-[17rem] sm:group-even:max-w-[60%] sm:group-even:pl-10 xl:group-even:ml-[1rem] xl:group-even:max-w-[55%] xl:group-even:pl-5">
           <div className="mb-2 flex w-full flex-row items-center justify-between">
             <h3 className="text-2xl font-semibold">{title}</h3>
-            <a
-              href={sourceCode}
-              target="_blank"
-              className="group flex items-center justify-start gap-2 rounded-full bg-gray-900 px-[0.75rem] py-[0.3rem] text-sm text-white outline-none transition hover:scale-105 hover:bg-gray-950 focus:scale-110 active:scale-[1.02]"
-            >
-              <small className="flex flex-row items-center justify-center gap-2 text-nowrap">
-                Source code
-                <TbExternalLink />
-              </small>
-            </a>
+            {sourceCode ? (
+              <a
+                href={sourceCode}
+                target="_blank"
+                className="group flex items-center justify-start gap-2 rounded-full bg-gray-900 px-[0.75rem] py-[0.3rem] text-sm text-white outline-none transition hover:scale-105 hover:bg-gray-950 focus:scale-110 active:scale-[1.02]"
+              >
+                <small className="flex flex-row items-center justify-center gap-2 text-nowrap">
+                  {isProd ? 'Visit site' : 'Source code'}
+                  <TbExternalLink />
+                </small>
+              </a>
+            ) : null}
           </div>
           <p className="mt-2 leading-relaxed text-gray-700 dark:text-white/80">{description}</p>
           <ul className="mt-4 flex flex-wrap gap-2 sm:mt-auto">

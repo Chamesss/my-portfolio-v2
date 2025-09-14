@@ -4,11 +4,15 @@ import chatapp from '@/public/chatapp.png'
 import imtLogo from '@/public/projects/logos/imt.png'
 import wysLogo from '@/public/projects/logos/wys.png'
 import skaLogo from '@/public/projects/logos/ska.png'
+import redditFetcherScreenshot from '@/public/reddit_fetcher.png'
+import invoiceGeneratorScreenshot from '@/public/invoice_generator.png'
 import screenshot from '@/public/screenshot.png'
 import React from 'react'
 import { CgWorkAlt } from 'react-icons/cg'
 import { FaReact } from 'react-icons/fa'
 import { LuGraduationCap } from 'react-icons/lu'
+import { GrWorkshop } from 'react-icons/gr'
+import { FaExternalLinkAlt } from 'react-icons/fa'
 
 import imtCalendar from '@/public/projects/imt/imt_calendar.png'
 import imtCreateProject from '@/public/projects/imt/imt_create_project.png'
@@ -74,6 +78,41 @@ export const experiencesData = [
     date: '2024 - present'
   },
   {
+    title: 'React Workshop',
+    location: "Pépinière d'Entreprise APII, Mahdia",
+    description: (
+      <span style={{ fontSize: '0.9rem' }}>
+        I successfully conducted a React workshop thanks to the opportunity provided by the
+        <b style={{ color: '#d97706' }} className="text-amber-600">
+          {' '}
+          Microsoft ISIMa Club
+        </b>
+        . The session introduced participants to modern React concepts through a hands-on project,
+        the{' '}
+        <b>
+          <em style={{ color: '#e11d48' }} className="text-rose-600">
+            React Drawing App
+          </em>
+          .{' '}
+          <a
+            href="https://github.com/Chamesss/react-drawing-app-walkthrough"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-2 inline-block text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          >
+            <FaExternalLinkAlt className="mb-0.5 inline h-4 w-4" />
+          </a>
+        </b>
+        <br />
+        <br />
+        The workshop had strong attendance, received very positive feedback, and helped participants
+        gain practical experience in building interactive applications.
+      </span>
+    ),
+    icon: React.createElement(GrWorkshop),
+    date: '19 February 2025'
+  },
+  {
     title: 'MERN Stack Developer / Project Manager',
     location: 'Tradrly, Tunisia - Mahdia',
     description: (
@@ -133,6 +172,22 @@ export const experiencesData = [
 
 export const projectsData = [
   {
+    title: 'Redanalyzer',
+    description:
+      'A Python tool that analyzes Reddit content using NLP to identify trending problems. It processes subreddit text, clusters similar posts, and ranks ideas by engagement to uncover validated project opportunities.',
+    tags: ['Python', 'NLP', 'Machine Learning', 'PRAW', 'spaCy', 'BERTopic'],
+    imageUrl: redditFetcherScreenshot
+  },
+  {
+    title: 'Invoice PDF Generator',
+    description:
+      'Generates a production-Ready invoice PDFs from API requests with support for Arabic, French, and English, custom fonts, RTL layout, tax calculations',
+    tags: ['Node.js', 'TypeScript', 'React-PDF', 'Express'],
+    imageUrl: invoiceGeneratorScreenshot,
+    sourceCode: 'https://rapidapi.com/chamsedinazouz/api/invoice-pdf-generator',
+    isProd: true
+  },
+  {
     title: 'Screenshots - Using electron js',
     description:
       "A simple electron js app that takes screenshots of the user's screen. The app is built using electron js, React, and Tailwind CSS.",
@@ -164,7 +219,7 @@ export const projectsData = [
     imageUrl: annonce,
     sourceCode: 'https://github.com/Chamesss?tab=repositories'
   }
-] as const
+]
 
 // Professional Projects Data
 export const professionalProjectsData = [
@@ -174,7 +229,10 @@ export const professionalProjectsData = [
     logo: wysLogo,
     title: 'World Yacht Store',
     description: [
-      'A yacht & berth marketplace that simplifies live auctions, sales, and charters for MN LAND & SEA S.R.L.',
+      <>
+        A yacht & berth marketplace, developed at <b>Quetratech</b>, that simplifies live auctions,
+        sales, and charters for MN LAND & SEA S.R.L.
+      </>,
       'Empowers users to easily bid, buy, or charter yachts online, streamlining a previously complex process.',
       'Widely adopted with positive user feedback, improving efficiency and customer satisfaction across the platform.'
     ],
@@ -187,7 +245,10 @@ export const professionalProjectsData = [
     logo: skaLogo,
     title: 'Skartisanal',
     description: [
-      'A cross-platform desktop app that helps businesses seamlessly manage inventory and WooCommerce products.',
+      <>
+        A cross-platform desktop app, developed at <b>Quetratech</b>, that helps businesses
+        seamlessly manage inventory and WooCommerce products.
+      </>,
       'Simplifies daily operations with product control, client management, and invoicing, saving time and reducing errors.',
       'Received positive client feedback for improving workflow efficiency and streamlining online store management.'
     ],
@@ -200,7 +261,10 @@ export const professionalProjectsData = [
     logo: imtLogo,
     title: 'Intelligent Management Tracker (IMT)',
     description: [
-      'A B2B productivity tracker delivered as an alpha release, designed to monitor work time, activity, and project progress for freelancers and teams.',
+      <>
+        A B2B productivity tracker delivered as an alpha release, developed at <b>Tradrly</b>,
+        designed to monitor work time, activity, and project progress for freelancers and teams.
+      </>,
       'Helps managers and businesses gain actionable insights through performance tracking, screenshots, and task management.',
       'Improves accountability and efficiency, allowing teams to focus on results while keeping transparent records of work.'
     ],
@@ -217,12 +281,16 @@ export const professionalProjectsData = [
 ]
 
 export const skillsData = [
-  'Javascript',
   'Typescript',
+  'Javascript',
   'React.js',
   'Next.js',
   'React Native',
   'Electron.js',
+  'Sequelize',
+  'PostgreSql',
+  'AWS S3',
+  'CI/CD',
   'Hooks',
   'Redux',
   'Zustand',

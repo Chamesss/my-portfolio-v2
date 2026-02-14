@@ -75,7 +75,7 @@ export const experiencesData = [
       </span>
     ),
     icon: React.createElement(CgWorkAlt),
-    date: '2024 - present'
+    date: '2024 - 2026'
   },
   {
     title: 'React Workshop',
